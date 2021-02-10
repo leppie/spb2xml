@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "spb2xml", "spb2xml.csproj", "{1954B5C8-3FCF-4123-9CE7-F07213C00BBE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1954B5C8-3FCF-4123-9CE7-F07213C00BBE}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{1954B5C8-3FCF-4123-9CE7-F07213C00BBE}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{1954B5C8-3FCF-4123-9CE7-F07213C00BBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1954B5C8-3FCF-4123-9CE7-F07213C00BBE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {40DC4C75-D0A6-4EAE-A85C-33547A9D2896}
+	EndGlobalSection
+EndGlobal
