@@ -70,6 +70,8 @@
     <Compile Include="SetDef.cs" />
     <Compile Include="SymbolBank.cs" />
     <Compile Include="SymbolDef.cs" />
+    <Compile Include="TextDecode.cs" />
+    <Compile Include="TextDecode.Data.cs" />
     <Compile Include="TypeDef.cs" />
   </ItemGroup>
   <ItemGroup>

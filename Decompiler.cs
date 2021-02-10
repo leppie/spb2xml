@@ -181,7 +181,7 @@ namespace spb2xml
                         }
                         else
                         {
-                            s = encoder.GetString(reader.ReadBytes(stringLen), 0, stringLen - 1);
+                            s = TextDecode.Decode(reader.ReadBytes(stringLen));
                         }
                         AddProp(current, prop, s, node);
                     }
