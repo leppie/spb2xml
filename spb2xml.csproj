@@ -11,7 +11,7 @@
     <AssemblyName>spb2xml</AssemblyName>
     <ManifestCertificateThumbprint>388E20C67D8AC6944FE3849A29CCE9ADE7980FBB</ManifestCertificateThumbprint>
     <ManifestKeyFile>spb2xml_TemporaryKey.pfx</ManifestKeyFile>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
     <SignManifests>false</SignManifests>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <FileUpgradeFlags>
