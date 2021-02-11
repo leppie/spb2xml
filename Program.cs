@@ -17,7 +17,7 @@ namespace spb2xml
         {
             Console.WriteLine("Usage: spb2xml [-hv] [-s symboldir] [-m mdllist] file.spb [output.xml]");
             Console.WriteLine("\t-h\tPrint help");
-            Console.WriteLine("\t-s\tSpecify simprop symbols search dir (defaults to FSX Simprop dir)");
+            Console.WriteLine("\t-s\tSpecify simprop symbols search dir (Packages\\fs-base-propdefs\\Propdefs\\1.0\\)");
             Console.WriteLine("\t-m\tSpecify path of a model list (same format as Autogen SDK\\library_objects.txt");
         }
 
@@ -91,22 +91,14 @@ namespace spb2xml
             // init simprop data
             //
 
-            if (simPropSearchPath == null)
+            if (simPropSearchPath is null)
             {
-                RegistryKey rkcu = Registry.CurrentUser;
-                RegistryKey rk = rkcu.OpenSubKey(@"Software\Microsoft\Microsoft Games\Flight Simulator\10.0", false);
-                if (rk == null)
-                {
-                    Console.WriteLine("Error: FSX not found, you should specify simprop search path with -s");
-                    return;
-                }
-                simPropSearchPath = rk.GetValue("AppPath").ToString();
-                if (simPropSearchPath == null)
-                {
-                    Console.WriteLine("Error: FSX not found, you should specify simprop search path with -s");
-                    return;
-                }
-                simPropSearchPath += @"\propdefs";
+#if DEBUG
+                simPropSearchPath = @"g:\MSFS Base\Packages\fs-base-propdefs\Propdefs\1.0\";
+#else
+                Console.WriteLine("Error: FSX not found, you should specify simprop search path with -s");
+                return;
+#endif
             }
             Console.WriteLine("Search property definition files in {0}", simPropSearchPath);
 
@@ -133,6 +125,7 @@ namespace spb2xml
             }
             Console.WriteLine();
 
+
             //
             // force culture to us (better printing)
             // 
@@ -158,9 +151,7 @@ namespace spb2xml
                     {
                         Console.WriteLine("Cannot read models bank file: {0}", e.Message);
                     }
-
                 }
-    
             }
 
             //
