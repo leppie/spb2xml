@@ -341,7 +341,7 @@ namespace spb2xml
 
                 //
                 // create property as enclosed element
-                XmlNode pNode = doc.CreateElement("", propName, "");
+                XmlNode pNode = doc.CreateElement("", propName.TrimEnd(), "");
                 XmlNode tNode = doc.CreateTextNode(text);
                 pNode.AppendChild(tNode);
                 node.AppendChild(pNode);
