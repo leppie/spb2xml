@@ -5,6 +5,7 @@ using System.Xml;
 
 namespace spb2xml
 {
+    [Serializable]
     public class SetDef : DefinitionElement
     {
         private List<string> mProperties = new List<string>();

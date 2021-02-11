@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Threading;
 using Microsoft.Win32;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace spb2xml
 
@@ -15,22 +16,16 @@ namespace spb2xml
 
         public static void PrintHelp()
         {
-            Console.WriteLine("Usage: spb2xml [-hv] [-s symboldir] [-m mdllist] file.spb [output.xml]");
+            Console.WriteLine("Usage: spb2xml [-hv] [-s symboldir] [-m mdllist] [file.spb] [output.xml]");
             Console.WriteLine("\t-h\tPrint help");
             Console.WriteLine("\t-s\tSpecify simprop symbols search dir (Packages\\fs-base-propdefs\\Propdefs\\1.0\\)");
-            Console.WriteLine("\t-m\tSpecify path of a model list (same format as Autogen SDK\\library_objects.txt");
+            //Console.WriteLine("\t-m\tSpecify path of a model list (same format as Autogen SDK\\library_objects.txt");
         }
 
         static void Main(string[] args)
         {
-            if (args.Length == 0)
-            {
-                PrintHelp();
-                return;
-            }
-
             string simPropSearchPath = null;
-            string inFileName = null;
+            string file = null;
             string outFileName = null;
             string modelsDescName = null;
             bool verbose = false;
@@ -66,9 +61,9 @@ namespace spb2xml
                 {
                     verbose = true;
                 }
-                else if (inFileName == null)
+                else if (file == null)
                 {
-                    inFileName = s;
+                    file = s;
                 }
                 else if (outFileName == null)
                 {
@@ -81,50 +76,66 @@ namespace spb2xml
                 }
             }
 
-            if (inFileName == null)
-            {
-                Console.WriteLine("Error: no file specified");
-                return;
-            }
-
             //
             // init simprop data
             //
 
-            if (simPropSearchPath is null)
+            var cacheFn = "propdefs.cache";
+            var exeDir = AppDomain.CurrentDomain.BaseDirectory;
+            var cachePath = Path.Combine(exeDir, cacheFn);
+
+            if (File.Exists(cachePath))
             {
+                Console.WriteLine("Search property definition files from cache");
+                using (var f = File.OpenRead(cachePath))
+                {
+                    var sb = (SymbolBank)new BinaryFormatter().Deserialize(f);
+                    SymbolBank.Instance = sb;
+                }
+            }
+            else
+            {
+                if (simPropSearchPath is null)
+                {
 #if DEBUG
-                simPropSearchPath = @"g:\MSFS Base\Packages\fs-base-propdefs\Propdefs\1.0\";
+                    simPropSearchPath = @"g:\MSFS Base\Packages\fs-base-propdefs\Propdefs\1.0\";
 #else
-                Console.WriteLine("Error: FSX not found, you should specify simprop search path with -s");
-                return;
+                    Console.WriteLine("Error: FSX not found, you should specify simprop search path with -s");
+                    return;
 #endif
-            }
-            Console.WriteLine("Search property definition files in {0}", simPropSearchPath);
+                }
 
-            //
-            // parse all propdefs
-            //
-            SymbolBank sb = SymbolBank.Instance;
-            DirectoryInfo cdi = new DirectoryInfo(simPropSearchPath);
-            foreach (FileInfo fi in cdi.GetFiles("*.xml"))
-            {
-                if (verbose)
+                Console.WriteLine("Search property definition files in {0}", simPropSearchPath);
+
+                //
+                // parse all propdefs
+                //
+                SymbolBank sb = SymbolBank.Instance;
+                DirectoryInfo cdi = new DirectoryInfo(simPropSearchPath);
+                foreach (FileInfo fi in cdi.GetFiles("*.xml"))
                 {
-                    Console.WriteLine("Add property definition file {0}", fi.Name);
+                    if (verbose)
+                    {
+                        Console.WriteLine("Add property definition file {0}", fi.Name);
+                    }
+                    try
+                    {
+                        sb.AddSymbolDefinitionFile(fi.FullName);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Warning: Cannot parse property definition file {0}", fi.FullName);
+                        if (verbose) Console.WriteLine("\t {0}", ex.Message);
+                    }
                 }
-                try
+
+                using (var f = File.Create(cachePath))
                 {
-                    sb.AddSymbolDefinitionFile(fi.FullName);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Warning: Cannot parse property definition file {0}", fi.FullName);
-                    if (verbose) Console.WriteLine("\t {0}", ex.Message);
+                    new BinaryFormatter().Serialize(f, SymbolBank.Instance);
                 }
             }
+
             Console.WriteLine();
-
 
             //
             // force culture to us (better printing)
@@ -154,32 +165,50 @@ namespace spb2xml
                 }
             }
 
-            //
-            // ok for the real thing
-            //
-            try
+            if (file is null)
             {
-                Stream output;
-                if (outFileName == null)
+                foreach (var f in Directory.GetFiles(".", "*.spb", SearchOption.AllDirectories))
                 {
-                    // guess it from name
-                    int i = inFileName.LastIndexOf('.');
-                    if (i != -1) outFileName = inFileName.Substring(0, i) + ".xml";
-                    else outFileName = inFileName + ".xml";
-                }
-                output = new FileStream(outFileName, FileMode.Create);
-                Decompiler dec = new Decompiler(inFileName);
-                if (mb != null) dec.SetModels(mb);
-                dec.Decompile(output);
-
-                if (outFileName != null)
-                {
-                    Console.WriteLine("Wrote to {0}", outFileName);
+                    Decompile(f, null);
                 }
             }
-            catch (Exception e)
+            else
             {
-                Console.WriteLine("Error: cannot decompile file {0} ({1})", inFileName, e.Message);
+                Decompile(file, outFileName);
+            }
+            
+
+            void Decompile(string f, string outFN)
+            {
+                //
+                // ok for the real thing
+                //
+                try
+                {
+                    if (outFN == null)
+                    {
+                        // guess it from name
+                        int i = f.LastIndexOf('.');
+                        if (i != -1) outFN = f.Substring(0, i) + ".xml";
+                        else outFN = f + ".xml";
+                    }
+
+                    using (Stream output = new FileStream(outFN, FileMode.Create))
+                    {
+                        Decompiler dec = new Decompiler(f);
+                        if (mb != null) dec.SetModels(mb);
+                        dec.Decompile(output);
+                    }
+
+                    if (outFN != null)
+                    {
+                        Console.WriteLine("Wrote to {0}", outFN);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error: cannot decompile file {0} ({1})", f, e.Message);
+                }
             }
         }
     }

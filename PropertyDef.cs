@@ -5,6 +5,7 @@ using System.Xml;
 
 namespace spb2xml
 {
+    [Serializable]
     public class PropertyDef : DefinitionElement
     {
         private bool mIsAttribute = false;

@@ -5,6 +5,7 @@ using System.Xml;
 
 namespace spb2xml
 {
+    [Serializable]
     public class EnumDef
     {
         private List<String> values = new List<string>();

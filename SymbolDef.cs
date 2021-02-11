@@ -6,6 +6,7 @@ using System.Diagnostics;
 
 namespace spb2xml
 {
+    [Serializable]
     public class SymbolDef : DefinitionElement
     {
 

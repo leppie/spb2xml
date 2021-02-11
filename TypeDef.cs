@@ -5,6 +5,7 @@ using System.Xml;
 
 namespace spb2xml
 {
+    [Serializable]
     public class TypeDef : DefinitionElement
     {
         private List<BindingMember> mBindingMembers = new List<BindingMember>();
@@ -57,6 +58,7 @@ namespace spb2xml
 
     }
 
+    [Serializable]
     public class BindingMember
     {
         private String mName;

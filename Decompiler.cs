@@ -82,10 +82,10 @@ namespace spb2xml
             }
             ntags = 0;
             // read headers (unknown)
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 12; i++)
             {
                 int v = reader.ReadInt32();
-                if (i == 4) ntags = v;
+                if (i == 6) ntags = v;
             }
 
             // allocate tags

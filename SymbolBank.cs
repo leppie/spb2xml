@@ -13,6 +13,7 @@ namespace spb2xml
     /// <summary>
     /// singleton class containing all symbols and property definitions
     /// </summary>
+    [Serializable]
     public sealed class SymbolBank
     {
         private Hashtable guidMap = new Hashtable();
@@ -65,6 +66,10 @@ namespace spb2xml
                     }
                     return instance;
                 }
+            }
+            set
+            {
+                instance = value;
             }
         }
 
