@@ -12,6 +12,14 @@ namespace spb2xml
 
         static void Transform()
         {
+            for (int i = 0; i < K.GetLength(0); i++)
+            {
+                for (int j = 0; j < K.GetLength(1); j++)
+                {
+                    K[i, j] = (char)0xff;
+                }
+            }
+
             for (int i = 0; i < S.Length; i++)
             {
                 var row = S[i];
@@ -32,7 +40,8 @@ namespace spb2xml
 
             for (; i < str.Length; i++)
             {
-                bytes[i] = S[str[i]][i % 250];
+                var row = S[str[i]];
+                bytes[i] = row?[i % 250] ?? 0xff;
             }
 
             bytes[i] = S[0][i % 250];
