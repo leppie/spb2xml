@@ -208,6 +208,10 @@ namespace spb2xml
                 catch (Exception e)
                 {
                     Console.WriteLine("Error: cannot decompile file {0} ({1})", f, e.Message);
+                    if (outFN != null)
+                    {
+                        File.Delete(outFN);
+                    }
                 }
             }
         }
