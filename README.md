@@ -15,7 +15,7 @@ See [this post](https://forums.flightsimulator.com/t/guide-how-to-extract-base-p
 
 Once you have extracted the MSFS 'base' packages to a location, you only need to point to it the first time using `-s`. 
 
-Example: `-s c:\MSFS Base\Packages\fs-base-propdefs\Propdefs\1.0\` .
+Example: `-s "c:\MSFS Base\Packages\fs-base-propdefs\Propdefs\1.0\"` .
 
 After that it will use a cache file called `propdefs.cache`, and you dont need to specify `-s` anymore. 
 
