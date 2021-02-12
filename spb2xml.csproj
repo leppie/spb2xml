@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>spb2xml</RootNamespace>
-    <AssemblyName>spb2xml</AssemblyName>
+    <AssemblyName>spb2xml-msfs</AssemblyName>
     <ManifestCertificateThumbprint>388E20C67D8AC6944FE3849A29CCE9ADE7980FBB</ManifestCertificateThumbprint>
     <ManifestKeyFile>spb2xml_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>false</GenerateManifests>

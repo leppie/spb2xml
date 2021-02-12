@@ -16,7 +16,7 @@ namespace spb2xml
 
         public static void PrintHelp()
         {
-            Console.WriteLine("Usage: spb2xml [-hv] [-s symboldir] [file.spb] [output.xml]");
+            Console.WriteLine("Usage: spb2xml-msfs [-hv] [-s symboldir] [file.spb] [output.xml]");
             Console.WriteLine("\t-h\tPrint help");
             Console.WriteLine("\t-s\tSpecify simprop symbols search dir (Packages\\fs-base-propdefs\\Propdefs\\1.0\\)");
             //Console.WriteLine("\t-m\tSpecify path of a model list (same format as Autogen SDK\\library_objects.txt");
@@ -100,7 +100,7 @@ namespace spb2xml
 #if DEBUG
                     simPropSearchPath = @"g:\MSFS Base\Packages\fs-base-propdefs\Propdefs\1.0\";
 #else
-                    Console.WriteLine("Error: FSX not found, you should specify simprop search path with -s");
+                    Console.WriteLine("Error: MSFS not found, you should specify simprop search path with -s");
                     return;
 #endif
                 }
