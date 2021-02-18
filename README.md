@@ -30,5 +30,6 @@ If you dont supply an argument for the SPB to extract, it will recursively extra
 - Only supports Windows-1252 encoded XML (fails on some 'translation' spbs)
 - No idea how the model bank works and if it can be extracted from the installation
 - Some files dont seem to roundtrip 100% (spb->xml->sbp), but the XML looks ok. This wont be addressed.
+- The types (`INPUTxxx/BEZIERCURVE`) used in the visual effects SPB's has not been decoded.
 
 See [README.txt](README.txt) for details on the original implementation.
