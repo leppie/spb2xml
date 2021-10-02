@@ -31,7 +31,7 @@ namespace spb2xml
         public bool AddSymbolDefinitionFile(string url)
         {
             // extract directory
-            string dirName = new FileInfo(url).DirectoryName;
+            string dirName = new FileInfo(url).Directory.Parent.FullName;
 
             XmlDocument doc = new XmlDocument();
             doc.Load(url);
